@@ -20,6 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Provider } from "@supabase/supabase-js";
 import { supabaseBrowserClient } from "@/utils/supabase/client";
+import { registerWithEmail } from "@/actions/register-with-email";
 
 const AuthPage = () => {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
@@ -35,7 +36,16 @@ const AuthPage = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    setIsAuthenticating(true);
+
+    const response = await registerWithEmail(values);
+    const { data, error } = JSON.parse(response);
+
+    if (error) {
+      console.warn("Sign in error", error);
+      return;
+    }
+    setIsAuthenticating(false);
   };
 
   async function socialAuth(provider: Provider) {
