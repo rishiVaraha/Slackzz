@@ -17,13 +17,31 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Provider } from "@supabase/supabase-js";
 import { supabaseBrowserClient } from "@/utils/supabase/client";
 import { registerWithEmail } from "@/actions/register-with-email";
+import { useRouter } from "next/navigation";
 
 const AuthPage = () => {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const getCurrentUser = async () => {
+      const {
+        data: { session },
+      } = await supabaseBrowserClient.auth.getSession();
+      if (session) {
+        return router.push("/");
+      }
+    };
+    getCurrentUser();
+    setIsMounted(true);
+  }, []);
+
   const formSchema = z.object({
     email: z.string().email(),
   });
@@ -58,6 +76,8 @@ const AuthPage = () => {
     });
     setIsAuthenticating(false);
   }
+
+  if (!isMounted) return null;
 
   return (
     <div className="min-h-screen p-5 grid text-center place-content-center bg-white">
