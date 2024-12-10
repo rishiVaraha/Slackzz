@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import ImageUpload from "@/components/ui/image-upload";
 import slugify from "slugify";
+import { v4 as uuid } from "uuid";
+import { createWorkspace } from "@/actions/create-workspace";
 
 const CreateWorkspace = () => {
   const { currStep } = useCreateWorkspaceValues();
@@ -92,12 +94,12 @@ const Step2 = () => {
     const invite_code = uuid();
     const error = await createWorkspace({ imageUrl, name, slug, invite_code });
     setIsSubmitting(false);
-    if (error?.error) {
-      console.log(error);
-      return toast.error("Couldn't create workspace. Please try again.");
-    }
-    toast.success("Workspace created successfully");
-    router.push("/");
+    // if (error?.error) {
+    //   console.log(error);
+    //   return toast.error("Couldn't create workspace. Please try again.");
+    // }
+    // toast.success("Workspace created successfully");
+    // router.push("/");
   };
 
   return (

@@ -1,5 +1,6 @@
-import { getUserData } from "@/actions/get-user-data";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
+
+import { getUserData } from "@/actions/get-user-data";
 
 const f = createUploadthing();
 
