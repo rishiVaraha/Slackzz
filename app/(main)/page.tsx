@@ -8,6 +8,8 @@ export default async function Home() {
     return redirect("/login");
   }
 
+  console.log(userData);
+
   const userWorkspaceId = userData.workspaces?.[0];
 
   if (!userWorkspaceId) {
